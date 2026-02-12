@@ -2,8 +2,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Course, Chapter, QuizQuestion, ExternalLink } from "../types";
 
-const PRIMARY_MODEL = "gemini-3-pro-preview"; 
-const FALLBACK_MODEL = "gemini-3-flash-preview";
+const PRIMARY_MODEL = "gemini-flash-latest"; 
+const FALLBACK_MODEL = "gemini-flash-latest"; // Using the same flash model for consistency and throughput
 
 /**
  * Enhanced helper to extract JSON from model responses.
@@ -51,7 +51,7 @@ const generateWithFallback = async (ai: GoogleGenAI, prompt: string, schema: any
     });
     return response;
   } catch (error: any) {
-    console.warn(`Primary model failed. Switching to ${FALLBACK_MODEL}.`, error);
+    console.warn(`Primary model failed. Attempting with fallback model ${FALLBACK_MODEL}.`, error);
     try {
       const response = await ai.models.generateContent({
         model: FALLBACK_MODEL,

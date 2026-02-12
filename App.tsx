@@ -19,7 +19,8 @@ declare global {
     gsap: any;
     ScrollTrigger: any;
     // Fix: Use any and optionality for aistudio to resolve conflicts with platform-injected global declarations
-    aistudio?: any;
+    // Update: Corrected to use the AIStudio interface type.
+    aistudio?: AIStudio;
   }
 }
 
