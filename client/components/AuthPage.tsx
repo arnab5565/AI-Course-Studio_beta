@@ -37,14 +37,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
       } else {
         // --- REGISTER ---
         const data = await registerUser(name, email, password);
-        // Server now returns token immediately — log the user in directly
-        console.log("Registration Response:", data);
-        if (data.token) {
-          onLogin(data.token);
-        } else {
-          setError(data.message || 'Registration successful, but no token returned. Please log in.');
-          setIsLogin(true);
-        }
+        // Show "check your email" message instead of auto-login
+        setSuccessMessage("✅ Account created! Please check your email and click the verification link before logging in.");
+        setIsLogin(true);
+        setName('');
+        setEmail('');
+        setPassword('');
       }
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');

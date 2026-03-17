@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const geminiRoutes = require("./routes/geminiRoutes");
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth",authRoutes);
-
+app.use("/api/gemini", geminiRoutes);
 app.listen(process.env.PORT,()=>{
-console.log("Server running");
+  console.log("Server running");
 });

@@ -557,7 +557,7 @@ const CoursePlayer = ({ course, onBack, onCompleteChapter }: { course: Course, o
 };
 
 export default function App() {
-  const [view, setView] = useState<'landing' | 'auth' | 'dashboard' | 'course'>('landing');
+  const [view, setView] = useState<'landing' | 'auth' | 'dashboard' | 'course' | 'verified'>('landing');
   const [courses, setCourses] = useState<Course[]>([]);
   const [activeCourse, setActiveCourse] = useState<Course | null>(null);
   const [showCreator, setShowCreator] = useState(false);
@@ -573,6 +573,13 @@ export default function App() {
     }
   };
 
+  // Handle email verification redirect from backend
+  useEffect(() => {
+    if (window.location.pathname === '/verified') {
+      setView('verified');
+      window.history.replaceState({}, '', '/');
+    }
+  }, []);
   // Auto-login from stored token on mount
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
@@ -610,6 +617,23 @@ export default function App() {
       {view !== 'auth' && view !== 'course' && <Navbar user={user} onHome={() => setView('landing')} onSignIn={() => setView('auth')} onSignOut={handleSignOut} />}
       {view === 'landing' && <LandingPage onStart={() => user ? setView('dashboard') : setView('auth')} />}
       {view === 'auth' && <AuthPage onLogin={handleLogin} />}
+      {view === 'verified' && (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center space-y-6 px-6">
+            <div className="w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-10 h-10 text-emerald-400" />
+            </div>
+            <h2 className="text-3xl font-black">Email Verified! 🎉</h2>
+            <p className="text-gray-400">Your account is now active. You can sign in.</p>
+            <button
+              onClick={() => setView('auth')}
+              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl font-black text-sm uppercase tracking-widest transition-all"
+            >
+              Sign In Now
+            </button>
+          </div>
+        </div>
+      )}
       {view === 'dashboard' && <Dashboard courses={courses} onCreateNew={() => setShowCreator(true)} onSelectCourse={(c) => { setActiveCourse(c); setView('course'); }} />}
       {view === 'course' && activeCourse && <CoursePlayer course={activeCourse} onBack={() => setView('dashboard')} onCompleteChapter={(id) => {
         const updated = activeCourse.chapters.map(c => c.id === id ? { ...c, isCompleted: true } : c);
