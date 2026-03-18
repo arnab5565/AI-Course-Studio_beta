@@ -3,6 +3,15 @@ const router  = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
+const { registerUser, loginUser, forgotPassword, resetPassword, verifyEmail } = require('../controllers/authController');
+
+// Local Auth Routes
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
+router.get('/verify-email', verifyEmail);
+
 // Step 1: Redirect user to Google
 router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })

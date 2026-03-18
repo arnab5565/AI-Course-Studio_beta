@@ -31,6 +31,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Auth routes
-app.use('/auth', require('./routes/authRoutes'));
+app.use('/auth', require('./routes/authRoutes')); // kept for any existing google auth callbacks
+app.use('/api/auth', require('./routes/authRoutes')); // used by frontend API
 app.use('/api/gemini', require('./routes/geminiRoutes'));
 app.listen(5000, () => console.log('Server running on port 5000'));
