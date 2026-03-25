@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { marked } from 'marked';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BookOpen, Play, CheckCircle, Brain, 
@@ -490,7 +491,7 @@ const CoursePlayer = ({ course, onBack, onCompleteChapter }: { course: Course, o
                       <div className="h-4 bg-white/5 rounded w-5/6" />
                     </div>
                   ) : (
-                    <div dangerouslySetInnerHTML={{ __html: chapterDetails?.content_md || "" }} />
+                    <div className="prose-custom" dangerouslySetInnerHTML={{ __html: marked.parse(chapterDetails?.content_md || "") as string }} />
                   )}
                 </motion.div>
               )}
